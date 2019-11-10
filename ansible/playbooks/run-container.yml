@@ -1,0 +1,20 @@
+---
+- hosts: '{{ host }}'
+  become: true
+  become_user: root
+  become_method: sudo
+  gather_facts: false
+  tasks:
+    - name: Install Python SDK for Docker
+      yum:
+        name:
+          - python-docker-py
+        state: present
+
+    - name: Run Docker Registry Server
+      docker_container:
+        name: registry
+        image: registry:2
+        published_ports: 5000:5000
+        restart_policy: always
+        state: started
