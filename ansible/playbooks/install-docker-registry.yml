@@ -9,7 +9,21 @@
       yum:
         name:
           - python-docker-py
+          - python3 
+          - python3-pip
         state: present
+
+    - name: pip install pyOpenSSL
+      pip:
+        name: pyOpenSSL
+        executable: pip3
+
+    - name: Generate a Self Signed OpenSSL certificate
+      openssl_certificate:
+        path: /registry/ssl/registry.crt
+        privatekey_path: /registry/ssl/registry.pem
+        csr_path: /registry/ssl/registry.csr
+        provider: selfsigned
 
     - name: Run Docker Registry Server
       docker_container:

@@ -16,9 +16,9 @@ resource "libvirt_domain" "vms" {
   }
 
   network_interface {
-    network_id = libvirt_network.terraform_network.id
-    hostname   = each.key
-    # addresses      = each.value["ip"]
+    network_id     = libvirt_network.terraform_network.id
+    hostname       = each.key
+    addresses      = each.value["ip"]
     wait_for_lease = true
   }
 
@@ -69,8 +69,9 @@ resource "libvirt_pool" "terraform_pool" {
 }
 
 resource "libvirt_volume" "centos_template" {
-  name   = "centos_template"
-  pool   = libvirt_pool.terraform_pool.name
+  name = "centos_template"
+  pool = libvirt_pool.terraform_pool.name
+  # https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1907.qcow2
   source = "/kvm-pool/images/CentOS-7-x86_64-GenericCloud-1907.qcow2"
 }
 

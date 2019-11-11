@@ -1,0 +1,73 @@
+---
+- name: Install required system packages
+  yum:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: Install Docker
+  yum:
+    name:
+      - docker-ce 
+      - docker-ce-cli
+      - containerd.io
+    state: present
+- name: Start and enable docker-service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install Python SDK for Docker
+  yum:
+    name:
+      - python-docker-py
+    state: present
+
+- name: create volumes
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: '0766'
+  with_items:
+    - /registry/data
+    - /registry/auth
+    - /registry/certs
+
+- name: copy htpasswd
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  with_items:
+    - { src: 'htpasswd', dest: '/registry/auth/htpasswd' }
+    - { src: 'registry.crt', dest: '/registry/certs/registry.crt' }
+    - { src: 'registry.key', dest: '/registry/certs/registry.key' }
+
+- name: Run Docker Registry Server
+  docker_container:
+    name: registry
+    image: registry:2
+    published_ports: 5000:5000
+    env:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/registry.key
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+    volumes:
+      - /registry/data:/var/lib/registry
+      - /registry/certs:/certs
+      - /registry/auth:/auth
+    restart_policy: always
+    state: started
+
