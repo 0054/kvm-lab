@@ -5,7 +5,20 @@
       - yum-utils
       - device-mapper-persistent-data
       - lvm2
+      - PyYAML
+      - epel-release
     state: present
+
+- name: Install python-pip
+  yum:
+    name: 
+      - python2-pip
+
+- name: pip install python-compose
+  pip:
+    name: 
+      - docker-compose
+      - docker
 
 - name: Add Docker repo
   get_url:
@@ -19,17 +32,12 @@
       - docker-ce-cli
       - containerd.io
     state: present
+
 - name: Start and enable docker-service
   systemd:
     name: docker
     state: started
     enabled: yes
-
-- name: Install Python SDK for Docker
-  yum:
-    name:
-      - python-docker-py
-    state: present
 
 - name: create volumes
   file:
@@ -39,7 +47,6 @@
   with_items:
     - /registry/data
     - /registry/auth
-    - /registry/certs
 
 - name: copy htpasswd
   copy:
@@ -47,27 +54,39 @@
     dest: '{{ item.dest }}'
     owner: root
     group: root
-    mode: u=rw,g=r,o=r
+    mode: 0777
   with_items:
     - { src: 'htpasswd', dest: '/registry/auth/htpasswd' }
-    - { src: 'registry.crt', dest: '/registry/certs/registry.crt' }
-    - { src: 'registry.key', dest: '/registry/certs/registry.key' }
+    - { src: 'domain.crt', dest: '/registry/auth/domain.crt' }
+    - { src: 'domain.key', dest: '/registry/auth/domain.key' }
+    - { src: 'nginx.conf', dest: '/registry/auth/nginx.conf' }
+    - { src: 'docker-compose.yml', dest: '/registry/docker-compose.yml' }
 
-- name: Run Docker Registry Server
-  docker_container:
-    name: registry
-    image: registry:2
-    published_ports: 5000:5000
-    env:
-      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
-      REGISTRY_HTTP_TLS_KEY: /certs/registry.key
-      REGISTRY_AUTH: htpasswd
-      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
-      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
-    volumes:
-      - /registry/data:/var/lib/registry
-      - /registry/certs:/certs
-      - /registry/auth:/auth
-    restart_policy: always
-    state: started
+- name: Install Docker Compose (if configured).
+  get_url:
+    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    dest: "{{ docker_compose_path }}"
+    mode: 0755
+
+- name: Docker Compose up
+  docker_compose:
+    project_src: /registry
+
+# - name: Run Docker Registry Server
+#   docker_container:
+#     name: registry
+#     image: registry:2
+#     published_ports: 5000:5000
+#     env:
+#       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
+#       REGISTRY_HTTP_TLS_KEY: /certs/registry.key
+#       REGISTRY_AUTH: htpasswd
+#       REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+#       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+#     volumes:
+#       - /registry/data:/var/lib/registry
+#       - /registry/certs:/certs
+#       - /registry/auth:/auth
+#     restart_policy: always
+#     state: started
 

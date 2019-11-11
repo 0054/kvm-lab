@@ -4,32 +4,29 @@
 - Генерируем сертификаты: 
 ```
 cd files
-openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out registry.crt
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout domain.key -x509 -days 365 -out domain.crt
 ```
 - Генерируем логин/пароль: 
 ```
 docker run --rm --entrypoint htpasswd registry:2 -Bbn user q1q1q1 > htpasswd
 ```
+- Сертификат надо применить на клиентах:
+```
+cp files/domain.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+systemctl restart docker.service
+```
 
 
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+# Example Playbook
+```
+- hosts: server
+  roles:
+    - docker-registry
+```
+```
+curl -X GET https://user:password@1.2.3.4:5000/v2/_catalog
+```
 
 License
 -------

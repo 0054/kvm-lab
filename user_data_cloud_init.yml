@@ -25,3 +25,5 @@ growpart:
   devices: ['/']
 runcmd:
 - sysctl -p
+- timedatectl set-timezone Europe/Moscow
+- timedatectl set-ntp true
