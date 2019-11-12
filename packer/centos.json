@@ -1,0 +1,33 @@
+{
+  "builders":
+  [
+    {
+      "type": "qemu",
+      "accelerator": "kvm",
+      "qemuargs": [
+        [ "-m", "1024" ],
+        [ "-smp", "cpus=2" ]
+      ],
+      "headless": "true",
+      "iso_url": "http://mirror.linux-ia64.org/centos/7.7.1908/isos/x86_64/CentOS-7-x86_64-NetInstall-1908.iso",
+      "iso_checksum": "6ffa7ad44e8716e4cd6a5c3a85ba5675a935fc0448c260f43b12311356ba85ad",
+      "iso_checksum_type": "sha256",
+      "output_directory": "centos_image",
+      "shutdown_command": "shutdown -P now",
+      "disk_size": "10000M",
+      "format": "qcow2",
+      "http_directory": "kickstart",
+      "ssh_username": "root",
+      "ssh_password": "q1q1q1",
+      "ssh_timeout": "20m",
+      "vm_name": "tdhtest",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "10s",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.ks<enter><wait>"
+      ]
+    }
+  ]
+}
+

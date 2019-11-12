@@ -68,25 +68,7 @@
     dest: "{{ docker_compose_path }}"
     mode: 0755
 
-- name: Docker Compose up
+- name: Docker Compose Up
   docker_compose:
     project_src: /registry
-
-# - name: Run Docker Registry Server
-#   docker_container:
-#     name: registry
-#     image: registry:2
-#     published_ports: 5000:5000
-#     env:
-#       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
-#       REGISTRY_HTTP_TLS_KEY: /certs/registry.key
-#       REGISTRY_AUTH: htpasswd
-#       REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
-#       REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
-#     volumes:
-#       - /registry/data:/var/lib/registry
-#       - /registry/certs:/certs
-#       - /registry/auth:/auth
-#     restart_policy: always
-#     state: started
 

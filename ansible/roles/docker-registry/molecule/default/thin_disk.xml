@@ -1,0 +1,38 @@
+<volume type='file'>
+  <name>molecule_centos_disk</name>
+  <key>/kvm-pool/images/molecule_centos_disk</key>
+  <source>
+  </source>
+  <capacity unit='bytes'>10737418240</capacity>
+  <allocation unit='bytes'>745873408</allocation>
+  <physical unit='bytes'>745930752</physical>
+  <target>
+    <path>/kvm-pool/images/molecule_centos_disk</path>
+    <format type='qcow2'/>
+    <permissions>
+      <mode>0644</mode>
+      <owner>0</owner>
+      <group>0</group>
+    </permissions>
+    <timestamps>
+      <atime>1573567742.777490036</atime>
+      <mtime>1573567742.141484323</mtime>
+      <ctime>1573567742.569488169</ctime>
+    </timestamps>
+  </target>
+  <backingStore>
+      <path>/kvm-pool/images/CentOS-7-x86_64-GenericCloud-1907.qcow2</path>
+    <format type='qcow2'/>
+    <permissions>
+      <mode>0644</mode>
+      <owner>64055</owner>
+      <group>130</group>
+    </permissions>
+    <timestamps>
+      <atime>1573558919.178777252</atime>
+      <mtime>1573558907.834731210</mtime>
+      <ctime>1573558918.918776197</ctime>
+    </timestamps>
+  </backingStore>
+</volume>
+

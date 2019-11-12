@@ -18,6 +18,26 @@ Host 10.10.1.*
     IdentityFile ~/kvm-lab/rsa/id_rsa
 ```
 
+### qemu
+
+для создания "тонкого" диска из образа:
+```
+$ sudo qemu-img create -b /kvm-pool/images/CentOS-7-x86_64-GenericCloud-1907.qcow2 -f qcow2 /kvm-pool/images/tmpl.qcow2
+Formatting '/kvm-pool/images/tmpl.qcow2', fmt=qcow2 size=8589934592 backing_file=/kvm-pool/images/CentOS-7-x86_64-GenericCloud-1907.qcow2 cluster_size=65536 lazy_refcounts=off refcount_bits=16
+$ qemu-img info /kvm-pool/images/tmpl.qcow2 
+image: /kvm-pool/images/tmpl.qcow2
+file format: qcow2
+virtual size: 8.0G (8589934592 bytes)
+disk size: 196K
+cluster_size: 65536
+backing file: /kvm-pool/images/CentOS-7-x86_64-GenericCloud-1907.qcow2
+Format specific information:
+    compat: 1.1
+    lazy refcounts: false
+    refcount bits: 16
+    corrupt: false
+```
+
 > ### статьи на почитать:
 
 > - https://stafwag.github.io/blog/blog/2019/03/03/howto-use-centos-cloud-images-with-cloud-init/
