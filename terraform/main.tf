@@ -68,30 +68,29 @@ resource "libvirt_pool" "terraform_pool" {
   path = var.pool_config["path"]
 }
 
-resource "libvirt_volume" "centos_template" {
-  name = "centos_template"
-  pool = libvirt_pool.terraform_pool.name
-  # https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1907.qcow2
-  source = "/kvm-pool/images/CentOS-7-x86_64-GenericCloud-1907.qcow2"
+resource "libvirt_volume" "template" {
+  name   = "tf_centos_template"
+  pool   = libvirt_pool.terraform_pool.name
+  source = var.images_pool.centos
 }
 
 resource "libvirt_volume" "vm_disk" {
   for_each       = var.vm_config
   name           = "${each.key}_disk"
   size           = each.value["disk"] * 1024 * 1024 * 1024
-  base_volume_id = "${libvirt_volume.centos_template.id}"
+  base_volume_id = "${libvirt_volume.template.id}"
   pool           = libvirt_pool.terraform_pool.name
 }
 
 data "template_file" "user_data" {
-  template = file("./user_data_cloud_init.yml")
+  template = file("./cloud-init/user_data_cloud_init.yml")
   vars = {
     rsa_pub = file("./rsa/id_rsa.pub")
   }
 }
 
 data "template_file" "network_config" {
-  template = file("./network_config_cloud_init.yml")
+  template = file("./cloud-init/network_config_cloud_init.yml")
   for_each = var.vm_config
   vars = {
     ip = each.value["ip"].0

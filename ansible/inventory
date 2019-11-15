@@ -2,16 +2,9 @@
 ansible_connection=ssh
 ansible_user=centos
 
-[lab]
-10.10.1.[2:255]
-
-[registry]
-10.10.1.11
-
-[monitoring]
-10.10.1.12
+[inf]
+inf-registry ansible_host=10.10.1.11
 
 [web]
-10.10.1.13
-10.10.1.14
-10.10.1.15
+web-01 ansible_host=10.10.1.12
+web-02 ansible_host=10.10.1.13
