@@ -1,0 +1,41 @@
+---
+- name: Install required system packages
+  yum:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+      - epel-release
+      - PyYAML
+    state: present
+
+- name: Install python-pip
+  yum:
+    name: 
+      - python2-pip
+
+- name: pip install python-compose
+  pip:
+    name: 
+      - docker-compose
+      - docker
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: Install Docker
+  yum:
+    name:
+      - docker-ce 
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: Start and enable docker-service
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+

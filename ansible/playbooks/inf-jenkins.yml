@@ -1,8 +1,9 @@
 ---
-- hosts: inf-registry
+- hosts: inf-jenkins
   become: true
   become_user: root
   become_method: sudo
   gather_facts: false
   roles:
-    - docker-registry
+    - docker
+    # - docker-jenkins
