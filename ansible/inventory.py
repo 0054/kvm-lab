@@ -19,8 +19,7 @@ import json
 #         leases = conn.networkLookupByName("terraform_network").DHCPLeases()
 #     return leases
 
-def createInventory(data):
-    inventory = {}
+def updateInventory(data):
     inventory = {}
     inventory['_meta'] = {'hostvars': {}} 
     for vmData in data:
@@ -33,11 +32,10 @@ def createInventory(data):
         inventory[group]['hosts'].append(hostname)
         inventory['_meta']['hostvars'][hostname] = {
                 'ansible_host': ip,
-                'ansible_user': 'centos',
+                'ansible_user': 'user',
                 'ansible_connection': 'ssh',
                 }
     return inventory
-
 
 def makeInventory():
     dataList = list()
@@ -52,13 +50,18 @@ def makeInventory():
                         ip = interface['addrs'][0]['addr']
                         break
                     i +=1
+                if '-' in vm.name():
+                    group = vm.name().split('-')[0]
+                else:
+                    group = 'ungrouped'
+
                 vmData = { 
                         'hostname': vm.name(),
-                        'group': vm.name().split('-')[0],
+                        'group': group,
                         'ip': ip
                         }
                 dataList.append(vmData)
-    inventory = createInventory(dataList)
+    inventory = updateInventory(dataList)
     return json.dumps(inventory, indent=4)
 
 

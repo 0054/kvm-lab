@@ -5,7 +5,7 @@
 #      root:q1q1q1
 #   expire: False
 users:
-  - name: centos
+  - name: user
     groups: wheel
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']

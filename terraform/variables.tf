@@ -1,8 +1,9 @@
 variable "vm_config" {
   default = {
-    # "inf-registry" = { vcpu = 1, memory = 512, ip = ["10.10.1.11"], disk = 10 }
-    "inf-jenkins" = { vcpu = 2, memory = 2048, ip = ["10.10.1.12"], disk = 10 }
-    # "web-02"       = { vcpu = 1, memory = 512, ip = ["10.10.1.13"], disk = 10 }
+    "inf-registry" = { vcpu = 1, memory = 512, ip = ["10.10.1.11"], disk = 10 }
+    # "test"         = { vcpu = 1, memory = 512, ip = ["10.10.1.20"], disk = 10 }
+    # "inf-jenkins" = { vcpu = 2, memory = 2048, ip = ["10.10.1.12"], disk = 10 }
+    # "web-02" = { vcpu = 1, memory = 512, ip = ["10.10.1.13"], disk = 10 }
     # "centos-vm4" = { vcpu = 1, memory = 512, ip = ["10.10.1.14"], disk = 10 }
     # "centos-vm5" = { vcpu = 1, memory = 512, ip = ["10.10.1.15"], disk = 10 }
   }
