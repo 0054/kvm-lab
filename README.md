@@ -14,7 +14,7 @@
 ```
 cat ~/.ssh/config
 Host 10.10.1.*
-    user centos
+    user user
     IdentityFile ~/kvm-lab/rsa/id_rsa
 ```
 
@@ -37,10 +37,4 @@ Format specific information:
     refcount bits: 16
     corrupt: false
 ```
-
-> ### статьи на почитать:
-
-> - https://stafwag.github.io/blog/blog/2019/03/03/howto-use-centos-cloud-images-with-cloud-init/
-> - https://scottlinux.com/2017/05/08/set-password-or-ssh-key-for-centos-cloud-images/
-
 

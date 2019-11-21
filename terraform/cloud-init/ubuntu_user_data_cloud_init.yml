@@ -4,9 +4,10 @@
 #   list: |
 #      root:q1q1q1
 #   expire: False
+hostname: "${hostname}"
 users:
   - name: user
-    groups: wheel
+    groups: sudo
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh-authorized-keys:

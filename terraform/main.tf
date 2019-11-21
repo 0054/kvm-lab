@@ -69,8 +69,10 @@ resource "libvirt_pool" "terraform_pool" {
 }
 
 resource "libvirt_volume" "template" {
-  name   = "tf_centos_template"
-  pool   = libvirt_pool.terraform_pool.name
+  name = "tf_centos_template"
+  # name   = "tf_ubuntu_template"
+  pool = libvirt_pool.terraform_pool.name
+  # source = var.images_pool.ubuntu
   source = var.images_pool.centos
 }
 
@@ -83,9 +85,11 @@ resource "libvirt_volume" "vm_disk" {
 }
 
 data "template_file" "user_data" {
-  template = file("./cloud-init/user_data_cloud_init.yml")
+  template = split("_", "${libvirt_volume.template.name}")[1] == "centos" ? file("./cloud-init/centos_user_data_cloud_init.yml") : file("./cloud-init/ubuntu_user_data_cloud_init.yml")
+  for_each = var.vm_config
   vars = {
-    rsa_pub = file("./rsa/id_rsa.pub")
+    rsa_pub  = file("./rsa/id_rsa.pub")
+    hostname = each.key
   }
 }
 
@@ -100,7 +104,7 @@ data "template_file" "network_config" {
 resource "libvirt_cloudinit_disk" "commoninit" {
   for_each       = var.vm_config
   name           = "${each.key}_cloudinit.iso"
-  user_data      = data.template_file.user_data.rendered
+  user_data      = data.template_file.user_data[each.key].rendered
   network_config = data.template_file.network_config[each.key].rendered
   pool           = libvirt_pool.terraform_pool.name
 }

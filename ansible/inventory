@@ -10,4 +10,3 @@ inf-registry ansible_host=10.10.1.11
 [web]
 web-01 ansible_host=10.10.1.12
 web-02 ansible_host=10.10.1.13
-

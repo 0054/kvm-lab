@@ -1,0 +1,29 @@
+---
+- name: Install required system packages
+  yum:
+    name:
+      - haproxy
+    state: present
+
+- name: configs
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: root
+    group: root
+    mode: 0777
+  with_items:
+    - { src: 'haproxy.cfg', dest: '/etc/haproxy/haproxy.cfg' }
+    - { src: 'haproxy-rsyslog.conf', dest: '/etc/rsyslog.d/haproxy.conf' }
+
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted
+    enabled: yes
+
+- name: start end enable HAproxy
+  systemd:
+    name: haproxy
+    state: started
+    enabled: yes

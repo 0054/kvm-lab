@@ -1,0 +1,30 @@
+#cloud-config
+# ssh_pwauth: True
+# chpasswd:
+#   list: |
+#      root:q1q1q1
+#   expire: False
+hostname: "{hostname}"
+users:
+  - name: user
+    groups: wheel
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - "${rsa_pub}"
+write_files:
+  - path: "/etc/sysctl.conf"
+    owner: root
+    content: |
+      net.ipv6.conf.all.disable_ipv6=1
+      net.ipv6.conf.default.disable_ipv6=1
+manage_resolv_conf: true
+resolv_conf:
+  domain: kvm.lab
+growpart:
+  mode: auto
+  devices: ['/']
+runcmd:
+- sysctl -p
+- timedatectl set-timezone Europe/Moscow
+- timedatectl set-ntp true
