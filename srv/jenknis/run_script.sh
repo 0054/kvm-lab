@@ -1,7 +1,10 @@
 #!/bin/bash
 
 function runScript {
-    CSRF_TOKEN=`curl -s http://${JENKINS_USER}:${JENKINS_API_TOKEN}@${JENKINS_SERVER}/crumbIssuer/api/json | python -c 'import sys,json;a=json.loads(sys.stdin.read());print "{}={}".format(a["crumbRequestField"],a["crumb"])'`
+    CSRF_TOKEN=`curl -s http://${JENKINS_USER}:${JENKINS_API_TOKEN}@${JENKINS_SERVER}/crumbIssuer/api/json | python -c '
+import sys,json
+a=json.loads(sys.stdin.read())
+print "{}={}".format(a["crumbRequestField"],a["crumb"])'`
     curl --user ${JENKINS_USER}:${JENKINS_API_TOKEN} -d "$CSRF_TOKEN" --data-urlencode "script=$( < $SCRIPT )" http://${JENKINS_SERVER}/scriptText
 }
 
