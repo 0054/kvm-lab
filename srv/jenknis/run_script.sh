@@ -11,7 +11,7 @@ print "{}={}".format(a["crumbRequestField"],a["crumb"])'`
 SCRIPT=$1
 if [ -f $SCRIPT ]; then
     if [ -z $JENKINS_API_TOKEN ] && [ -z $JENKINS_USER ] && [ -z $JENKINS_SERVER ]; then
-        JENKINS_API_TOKEN=11696ee854346774b111f3265498ea8b00
+        JENKINS_API_TOKEN=
         JENKINS_USER=admin
         JENKINS_SERVER=10.10.1.12
         runScript

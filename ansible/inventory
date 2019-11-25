@@ -1,12 +1,7 @@
-10.10.10.10
-asdasd
 [all:vars]
 ansible_connection=ssh
-ansible_user=centos
+ansible_user=user
 
 [inf]
 inf-registry ansible_host=10.10.1.11
 
-[web]
-web-01 ansible_host=10.10.1.12
-web-02 ansible_host=10.10.1.13
