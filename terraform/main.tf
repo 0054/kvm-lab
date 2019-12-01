@@ -53,9 +53,9 @@ resource "libvirt_network" "terraform_network" {
   mode      = "nat"
   domain    = var.network_config["domain"]
   addresses = var.network_config["addresses"]
-  # dhcp {
-  #   enabled = true
-  # }
+  dhcp {
+    enabled = true
+  }
   dns {
     enabled    = true
     local_only = false

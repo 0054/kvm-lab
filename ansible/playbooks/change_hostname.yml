@@ -1,0 +1,12 @@
+---
+- hosts: web
+  become: true
+  become_user: root
+  become_method: sudo
+  gather_facts: false
+  tasks:
+    # - debug:
+    #     msg: hostname {{ host_name }}
+    - name: change hostname
+      hostname:
+        name: "{{ host_name }}"

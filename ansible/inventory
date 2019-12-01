@@ -5,3 +5,7 @@ ansible_user=user
 [inf]
 inf-registry ansible_host=10.10.1.11
 
+[web]
+web01 ansible_host=10.10.1.13 host_name=web-py
+web02 ansible_host=10.10.1.14 host_name=web-go
+
