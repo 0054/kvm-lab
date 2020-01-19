@@ -1,8 +1,8 @@
 ---
-- hosts: inf-registry
+- hosts: inf-db1
   become: true
   become_user: root
   become_method: sudo
   gather_facts: false
   roles:
-    - docker-registry
+    - postgresql-server
