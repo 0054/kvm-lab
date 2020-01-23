@@ -1,0 +1,13 @@
+pipeline {
+    stages {
+        stage ('send mail') {
+            steps {
+            script {
+                mail to: 'name@addr.com',
+                     subject: "Fail Pipeline: ${currentBuild.fullDisplayName}",
+                     body: "Something is wrong with ${env.BUILD_URL}"
+                }
+            }
+        }
+    }
+}

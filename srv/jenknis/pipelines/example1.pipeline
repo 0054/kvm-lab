@@ -1,0 +1,71 @@
+#!/usr/bin/env groovy
+
+String repoName = "git@addr.com:grp/project-name.git"
+String projectId = repoName.split("\\.git")[0].split("\\:")[-1]
+
+
+pipeline {
+    agent any
+    options {
+        gitLabConnection('cred')
+        //количесво сборок для хранения
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 1, unit: 'HOURS')
+        timestamps()
+        ansiColor('xterm')
+    }
+    triggers {
+        //gitlab(triggerOnPush: true, triggerOnMergeRequest: true, branchFilterTrype: 'master')
+        pollSCM 'H 1 * * *'
+    }
+    post {
+        failure {
+            script {
+                mail to: 'name@addr.com',
+                     subject: "Fail Pipeline: ${currentBuild.fullDisplayName}",
+                     body: "Something is wrong with ${env.BUILD_URL}"
+            }
+        }
+    }
+    stages {
+        stage ('checkout') {
+            step {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg,
+                    userRemoteConfigs: [[
+                        credentialsId: 'creden',
+                        url: repoName
+                    ]]
+                ])
+            }
+            stage('build') {
+                steps {
+                    gitlabCommitStatus(
+                        name: env.STAGE_NAME,
+                        builds: [[
+                            projectId: projectId,
+                            revisionHash: 'master']]) {
+                                withMaven(maven: 'Maven') {
+                                    sh "mvn package"
+                                }
+                            }
+                }
+            }
+            stage('archive') {
+                steps {
+                    gitlabCommitStatus(
+                        name: env.STAGE_NAME,
+                        builds: [[
+                            projectId: projectId,
+                            revisionHash: 'master']]) {
+                                archiveArtifacts artifacts: 'tagret/rpm/project_name/RPMS/noarch/*.rpm'
+                            }
+                }
+            }
+        }
+    }
+}
