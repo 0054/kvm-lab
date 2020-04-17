@@ -12,10 +12,13 @@ variable "vm_config" {
     #"inf-rsync" = { vcpu = 1, memory = 512, ip = ["10.10.1.20"], disk = 10 }
     # "inf-db1" = { vcpu = 2, memory = 2048, ip = ["10.10.1.21"], disk = 10 }
     # "inf-db2" = { vcpu = 2, memory = 2048, ip = ["10.10.1.22"], disk = 10 }
-    #"client1"   = { vcpu = 1, memory = 512, ip = ["10.10.1.200"], disk = 10 }
-    "elk-1" = { vcpu = 1, memory = 2048, ip = ["10.10.1.31"], disk = 10 }
-    "elk-2" = { vcpu = 1, memory = 2048, ip = ["10.10.1.32"], disk = 10 }
-    "elk-3" = { vcpu = 1, memory = 2048, ip = ["10.10.1.33"], disk = 10 }
+    "inf-mariadb1" = { vcpu = 2, memory = 1024, ip = ["10.10.1.23"], disk = 10 }
+    "inf-mariadb2" = { vcpu = 2, memory = 1024, ip = ["10.10.1.24"], disk = 10 }
+    # "elk-1" = { vcpu = 1, memory = 2048, ip = ["10.10.1.31"], disk = 10 }
+    # "elk-2" = { vcpu = 1, memory = 2048, ip = ["10.10.1.32"], disk = 10 }
+    # "elk-3" = { vcpu = 1, memory = 2048, ip = ["10.10.1.33"], disk = 10 }
+
+    "client1" = { vcpu = 1, memory = 512, ip = ["10.10.1.200"], disk = 10 }
   }
 }
 
