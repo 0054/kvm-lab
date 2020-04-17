@@ -12,3 +12,8 @@ web02 ansible_host=10.10.1.14 host_name=web-go
 [databases]
 inf-db1 ansible_host=10.10.1.21
 inf-db2 ansible_host=10.10.1.22
+
+[elk]
+elk-1 ansible_host=10.10.1.31 kibana=true
+elk-2 ansible_host=10.10.1.32
+elk-3 ansible_host=10.10.1.33

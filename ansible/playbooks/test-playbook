@@ -1,0 +1,26 @@
+#!/usr/bin/env ansible-playbook
+
+- hosts: elk
+  # gather_facts: no
+  vars:
+    # - test1: "{%for i in groups.elk %}{{hostvars[i].ansible_default_ipv4.address}} {%endfor%}" 
+  tasks:
+  - set_fact:
+      ip_list: "{{ ip_list | default([]) + [hostvars[item].ansible_default_ipv4.address]  }}"
+    loop: "{{ groups.elk }}"
+
+  - name: show the groups the host(s) are in
+    debug:
+      msg: "{{ip_list}}"
+      # msg: "{{groups}}"
+      # msg: "{%for i in groups.elk %}'{{hostvars[i].ansible_default_ipv4.address}}',{%endfor%}" 
+      # msg: "{{ test1.split(' ') }}"
+      # msg: "{{ansible_hostname}}"
+
+  - name: test2
+    # debug: msg="{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}" #{{ hostvars[inventory_hostname]["ansible_fqdn"] }} {{ hostvars[inventory_hostname]["ansible_hostname"] }}"
+    debug: msg="{{ inventory_hostname }}"
+
+  # - name: 1
+  #   debug: var=ansible_facts
+

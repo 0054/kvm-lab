@@ -1,0 +1,43 @@
+---
+- hosts: elk
+  become: true
+  become_user: root
+  become_method: sudo
+  # gather_facts: false
+  tasks:
+    - set_fact:
+        ip_list: "{{ ip_list | default([]) + [hostvars[item].ansible_default_ipv4.address]  }}"
+      loop: "{{ groups.elk }}"
+    - name: Add Open Distro repo
+      get_url:
+        url: https://d3g5vo6xdbdb9a.cloudfront.net/yum/opendistroforelasticsearch-artifacts.repo
+        dest: /etc/yum.repos.d/opendistroforelasticsearch-artifacts.repo
+    - name: install unzip
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - bash-completion
+          - wget
+          - unzip
+    - name: install packages
+      yum:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - java-11-openjdk
+          - java-11-openjdk-devel
+          - opendistroforelasticsearch
+    - name: Template a file to /etc/files.conf
+      template:
+        src: ./templates/elasticsearch_opendistro_cluster.j2
+        dest: /etc/elasticsearch/elasticsearch.yml
+        owner: root
+        group: elasticsearch
+        mode: '0664'
+    - name: run elasticsearch
+      systemd:
+        state: started
+        name: elasticsearch
+
+

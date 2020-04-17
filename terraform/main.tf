@@ -11,7 +11,7 @@ resource "libvirt_domain" "vms" {
   cloudinit = libvirt_cloudinit_disk.commoninit[each.key].id
 
   disk {
-    volume_id = "${libvirt_volume.vm_disk[each.key].id}"
+    volume_id = libvirt_volume.vm_disk[each.key].id
     scsi      = true
   }
 
@@ -80,7 +80,7 @@ resource "libvirt_volume" "vm_disk" {
   for_each       = var.vm_config
   name           = "${each.key}_disk"
   size           = each.value["disk"] * 1024 * 1024 * 1024
-  base_volume_id = "${libvirt_volume.template.id}"
+  base_volume_id = libvirt_volume.template.id
   pool           = libvirt_pool.terraform_pool.name
 }
 
