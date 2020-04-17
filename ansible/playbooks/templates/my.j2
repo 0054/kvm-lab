@@ -1,0 +1,14 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+symbolic-links=0
+[mariadb]
+log-bin
+server_id=1 # 2 на мастере2
+log-error=/var/log/mariadb/mariadb.err
+log-basename=db1
+[mysqld_safe]
+log-error=/var/log/mariadb/mariadb.log
+pid-file=/var/run/mariadb/mariadb.pid
+!includedir /etc/my.cnf.d
+

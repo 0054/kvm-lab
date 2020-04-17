@@ -1,0 +1,26 @@
+---
+- hosts: '{{ host }}'
+  become: true
+  become_user: root
+  become_method: sudo
+  gather_facts: false
+  tasks:
+    - name: install mariadb
+      yum:
+        name:
+          - mariadb-server
+        state: present
+
+    - name: overwrite my.cnf
+      template:
+        src: ./templates/my.j2
+        dest: /etc/my.cnf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Start and enable service
+      systemd:
+        name: mariadb
+        state: started
+        enabled: yes
