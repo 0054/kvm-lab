@@ -1,8 +1,8 @@
 ---
-- hosts: inf-db1
+- hosts: '{{ host }}'
   become: true
   become_user: root
   become_method: sudo
-  gather_facts: false
+  # gather_facts: false
   roles:
-    - postgresql-server
+    - node-exporter

@@ -1,0 +1,19 @@
+---
+- name: copy node_exporter RPM
+  copy:
+    src: 'node_exporter-0.18.1-1.el7.x86_64.rpm'
+    dest: '/tmp/'
+    owner: root
+    group: root
+    mode: 0777
+
+- name: install node_exporter
+  yum:
+    name: /tmp/node_exporter-0.18.1-1.el7.x86_64.rpm
+    state: present
+
+- name: Start and enable node_exporter
+  systemd:
+    name: node_exporter
+    state: started
+    enabled: yes
