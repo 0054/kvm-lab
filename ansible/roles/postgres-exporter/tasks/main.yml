@@ -1,0 +1,19 @@
+---
+- name: copy node_exporter RPM
+  copy:
+    src: 'postgres_exporter-0.8.0-4.el7.x86_64.rpm'
+    dest: '/tmp/'
+    owner: root
+    group: root
+    mode: 0777
+
+- name: install postgres_exporter
+  yum:
+    name: /tmp/postgres_exporter-0.8.0-4.el7.x86_64.rpm
+    state: present
+
+- name: Start and enable postgres_exporter
+  systemd:
+    name: postgres_exporter
+    state: started
+    enabled: yes

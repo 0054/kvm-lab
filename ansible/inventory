@@ -9,7 +9,7 @@ inf-registry ansible_host=10.10.1.11
 web01 ansible_host=10.10.1.13 host_name=web-py
 web02 ansible_host=10.10.1.14 host_name=web-go
 
-[databases]
+[db]
 inf-db1 ansible_host=10.10.1.21
 inf-db2 ansible_host=10.10.1.22
 
