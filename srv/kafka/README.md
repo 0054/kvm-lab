@@ -220,7 +220,7 @@ sasl.enabled.mechanisms=PLAIN
 
 тут мы создали listner на 9094 который работает по SASL SSL
 
-тк же создаём jaas конфиг
+тaк же создаём jaas конфиг
 /etc/kafka/kafka_server_jaas.conf:
 ```
 KafkaServer {
@@ -230,10 +230,10 @@ KafkaServer {
     user_admin="q1q1q1";
 };
 ```
-создаём логин и пароль
+задаём логин и пароль
 
-чтобы это заработало кафке надо при запуске передать параметр c путём до этого конфига:
-выглядит так
+чтобы это заработало кафке надо при запуске передать параметр c путём до этого конфига 
+выглядит так:
 ```
 -Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf
 ```
@@ -254,8 +254,8 @@ KAFKA_JMX_OPTS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.aut
 ```
 kafka.security.protocol = SASL_SSL
 kafka.ssl.truststore.location = kafka.truststore.jks
-kafka.ssl.truststore.password = P@SSw0rd
-kafka.ssl.key.password = P@SSw0rd
+kafka.ssl.truststore.password = P@ssw0rd
+kafka.ssl.key.password = P@ssw0rd
 kafka.sasl.mechanism = PLAIN
 kafka.sasl.password = q1q1q1
 kafka.sasl.username = admin
